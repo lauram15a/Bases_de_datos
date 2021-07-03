@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.2-alpha" last-position="0,37" last-zoom="0.9"
+	 default-schema="public" default-owner="postgres">
+<database name="new_database" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<table name="supermarket" hide-ext-attribs="true">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Table where we will insert information about the supermarket. ]]></comment>
+	<position x="160" y="80"/>
+	<column name="city" not-null="true">
+		<type name="char" length="40"/>
+		<comment><![CDATA[Name of the city.]]></comment>
+	</column>
+	<column name="district" not-null="true">
+		<type name="char" length="40"/>
+		<comment><![CDATA[Name of the district where the supermarket is.]]></comment>
+	</column>
+	<constraint name="supermarket_pk" type="pk-constr" table="public.supermarket">
+		<columns names="city,district" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="worker" hide-ext-attribs="true">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Super entity.
+Table where we will write the information about worker.]]></comment>
+	<position x="740" y="100"/>
+	<column name="ID" not-null="true">
+		<type name="char" length="9"/>
+		<comment><![CDATA[ID has 8 numbers and 1 letter.]]></comment>
+	</column>
+	<column name="name" not-null="true">
+		<type name="char" length="40"/>
+		<comment><![CDATA[The worker's name.]]></comment>
+	</column>
+	<column name="phone" not-null="true">
+		<type name="integer" length="9"/>
+		<comment><![CDATA[The worker's phone.]]></comment>
+	</column>
+	<column name="timeTable" not-null="true">
+		<type name="char" length="1"/>
+		<comment><![CDATA[Morning / Afternoon]]></comment>
+	</column>
+	<column name="type" not-null="true">
+		<type name="char" length="40"/>
+		<comment><![CDATA[Defines the type of worker. It can be Cashier or Repletener. ]]></comment>
+	</column>
+	<constraint name="worker_pk" type="pk-constr" table="public.worker">
+		<columns names="ID" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="city_supermarket" index="4"/>
+		<object name="district_supermarket" index="5"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="supermarket_fk" index="1"/>
+	</customidxs>
+</table>
+
+<table name="cashier" hide-ext-attribs="true">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Sub entity.
+Casier is a tipe of worker.
+Table where we will write information about cashier.]]></comment>
+	<position x="860" y="320"/>
+	<column name="ID" not-null="true">
+		<type name="char" length="9"/>
+		<comment><![CDATA[ID has 8 numbers and 1 letter]]></comment>
+	</column>
+	<constraint name="cashier_pk" type="pk-constr" table="public.cashier">
+		<columns names="ID" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="repletener" hide-ext-attribs="true">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Sub entity.
+It is a tipe of worker.
+Table where we will write information about repletener.]]></comment>
+	<position x="1200" y="200"/>
+	<column name="ID" not-null="true">
+		<type name="char" length="9"/>
+		<comment><![CDATA[8 numbers and 1 letter]]></comment>
+	</column>
+	<column name="numberHours" not-null="true" default-value="1">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[It must be less than 24 hours and more than 0.]]></comment>
+	</column>
+	<constraint name="repletener_pk" type="pk-constr" table="public.repletener">
+		<columns names="ID" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="member" hide-ext-attribs="true">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Table where we will write information about member.]]></comment>
+	<position x="120" y="260"/>
+	<column name="membershipCode" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[The identification of the member.]]></comment>
+	</column>
+	<column name="name" not-null="true">
+		<type name="char" length="40"/>
+		<comment><![CDATA[The member's name.]]></comment>
+	</column>
+	<column name="email" not-null="true">
+		<type name="char" length="40"/>
+		<comment><![CDATA[The member's email.]]></comment>
+	</column>
+	<column name="address" not-null="true">
+		<type name="char" length="40"/>
+		<comment><![CDATA[The member's address.]]></comment>
+	</column>
+	<column name="telephoneNumer">
+		<type name="integer" length="9"/>
+		<comment><![CDATA[It is multivalued and optional.
+The member's telephone number.]]></comment>
+	</column>
+	<column name="pointsAccumulated" not-null="true" default-value="0">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[The member's accumulated points.]]></comment>
+	</column>
+	<constraint name="member_pk" type="pk-constr" table="public.member">
+		<columns names="membershipCode" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="telephoneNumber">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Table of the maltivalued attribute of member's telephoneNumber.]]></comment>
+	<position x="380" y="400"/>
+	<column name="telephoneNumer">
+		<type name="integer" length="9"/>
+		<comment><![CDATA[The member's telephone member.]]></comment>
+	</column>
+
+	<customidxs object-type="column">
+		<object name="membershipCode_member" index="1"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="member_fk" index="1"/>
+		<object name="telephoneNumber_pk" index="0"/>
+	</customidxs>
+</table>
+
+<table name="coupon">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Table where we will write information about coupon.]]></comment>
+	<position x="320" y="580"/>
+	<column name="ID" not-null="true">
+		<type name="integer" length="9"/>
+		<comment><![CDATA[The ID of each coupon.]]></comment>
+	</column>
+	<column name="percentage" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Percentage applied in the coupon]]></comment>
+	</column>
+	<constraint name="coupon_pk" type="pk-constr" table="public.coupon">
+		<columns names="ID" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="opinion">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Table wher we will write information about opinion.]]></comment>
+	<position x="120" y="720"/>
+	<column name="date" not-null="true">
+		<type name="date" length="0"/>
+		<comment><![CDATA[DD/MM/YYYY
+It is the date when the opinion is written.]]></comment>
+	</column>
+	<column name="time" not-null="true">
+		<type name="time" length="0"/>
+		<comment><![CDATA[HH:MM:SS]]></comment>
+	</column>
+	<column name="score" not-null="true" default-value="0">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[It must be 0 <= x <= 10]]></comment>
+	</column>
+	<constraint name="opinion_pk" type="pk-constr" table="public.opinion">
+		<columns names="date,time" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="discount" hide-ext-attribs="true">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Table where we will write information about discount.]]></comment>
+	<position x="980" y="860"/>
+	<column name="week" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[The number of the week of the year.]]></comment>
+	</column>
+	<column name="percentage" not-null="true" default-value="0">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[0 <= x < 100]]></comment>
+	</column>
+	<constraint name="discount_pk" type="pk-constr" table="public.discount">
+		<columns names="week" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="ticket">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Table where we will write information about ticket.]]></comment>
+	<position x="1040" y="480"/>
+	<column name="ID" not-null="true">
+		<type name="char" length="40"/>
+		<comment><![CDATA[The ticket identifier code]]></comment>
+	</column>
+	<column name="date" not-null="true">
+		<type name="date" length="0"/>
+		<comment><![CDATA[DD/MM/YYYY]]></comment>
+	</column>
+	<column name="timeIssuance" not-null="true">
+		<type name="time" length="0"/>
+		<comment><![CDATA[HH:MM:SS]]></comment>
+	</column>
+	<column name="coupon_used" not-null="true">
+		<type name="boolean" length="0"/>
+	</column>
+	<column name="totalPrice" not-null="true">
+		<type name="float" length="0"/>
+		<comment><![CDATA[Total billed from the ticket]]></comment>
+	</column>
+	<constraint name="ticket_pk" type="pk-constr" table="public.ticket">
+		<columns names="ID" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="ID_cashier" index="5"/>
+		<object name="membershipCode_member" index="6"/>
+		<object name="quantityUsed" index="8"/>
+		<object name="usesAccumulatedNumber" index="7"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="cashier_fk" index="1"/>
+		<object name="member_fk" index="2"/>
+	</customidxs>
+</table>
+
+<table name="product">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Table where we will write information about product.]]></comment>
+	<position x="560" y="800"/>
+	<column name="barCode" not-null="true">
+		<type name="integer" length="13"/>
+		<comment><![CDATA[The bar code of the product.]]></comment>
+	</column>
+	<column name="name_product" not-null="true">
+		<type name="char" length="40"/>
+		<comment><![CDATA[Name of the product purchased]]></comment>
+	</column>
+	<column name="priceVAT" not-null="true" default-value="0">
+		<type name="real" length="0"/>
+		<comment><![CDATA[The price Vat of the product.]]></comment>
+	</column>
+	<column name="priceNotVAT" not-null="true" default-value="0">
+		<type name="real" length="0"/>
+		<comment><![CDATA[The price not VAT of the product.]]></comment>
+	</column>
+	<constraint name="product_pk" type="pk-constr" table="public.product">
+		<columns names="barCode" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="endDate" index="6"/>
+		<object name="startDate" index="5"/>
+		<object name="week_discount" index="4"/>
+	</customidxs>
+
+	<customidxs object-type="constraint">
+		<object name="discount_fk" index="1"/>
+	</customidxs>
+</table>
+
+<table name="phone">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<comment><![CDATA[Multivalued attribute of worker.]]></comment>
+	<position x="1200" y="80"/>
+	<column name="phone">
+		<type name="integer" length="9"/>
+		<comment><![CDATA[The worker's phone.]]></comment>
+	</column>
+</table>
+
+<relationship name="worker_tiene_muchos_phone" type="rel1n"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#aa0000"
+	 src-table="public.worker"
+	 dst-table="public.phone"
+	 src-required="false" dst-required="false">
+	<special-pk-cols indexes="0"/>
+</relationship>
+
+<relationship name="member_tiene_muchos_telephoneNumber" type="rel1n"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#aa0000"
+	 src-table="public.member"
+	 dst-table="public.&quot;telephoneNumber&quot;"
+	 src-required="false" dst-required="false">
+	<special-pk-cols indexes="0"/>
+</relationship>
+
+<relationship name="has" type="relnn"
+	 src-col-pattern="{sc}_{st}" dst-col-pattern="{sc}_{dt}"
+	 pk-pattern="{gt}_pk" uq-pattern="{gt}_uq"
+	 src-fk-pattern="{st}_fk" dst-fk-pattern="{dt}_fk"
+	 pk-col-pattern="id"
+	 custom-color="#aa00ff"
+	 src-table="public.member"
+	 dst-table="public.coupon"
+	 src-required="false" dst-required="false"
+	 table-name="muchos_member_tiene_muchos_coupon"/>
+
+<relationship name="sells" type="rel1n"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#83af1f"
+	 src-table="public.cashier"
+	 dst-table="public.ticket"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="opines" type="rel1n"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#83af1f"
+	 src-table="public.member"
+	 dst-table="public.opinion"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rebates" type="rel1n"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#83af1f"
+	 src-table="public.discount"
+	 dst-table="public.product"
+	 src-required="false" dst-required="false">
+	<column name="endDate">
+		<type name="date" length="0"/>
+		<comment><![CDATA[Date of death  of the coupon]]></comment>
+	</column>
+	<column name="startDate">
+		<type name="date" length="0"/>
+		<comment><![CDATA[Date of starting]]></comment>
+	</column>
+</relationship>
+
+<relationship name="employees" type="rel1n"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#83af1f"
+	 src-table="public.supermarket"
+	 dst-table="public.worker"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="asociated to" type="rel1n"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#83af1f"
+	 src-table="public.member"
+	 dst-table="public.ticket"
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="0" y="0"/>
+	</label>
+	<column name="usesAccumulatedNumber" not-null="true">
+		<type name="boolean" length="0"/>
+		<comment><![CDATA[If the money accumulated is used (true/false)]]></comment>
+	</column>
+	<column name="quantityUsed">
+		<type name="float" length="0"/>
+		<comment><![CDATA[Quantity used]]></comment>
+	</column>
+</relationship>
+
+<relationship name="purchased" type="relnn"
+	 src-col-pattern="{sc}_{st}" dst-col-pattern="{sc}_{dt}"
+	 pk-pattern="{gt}_pk" uq-pattern="{gt}_uq"
+	 src-fk-pattern="{st}_fk" dst-fk-pattern="{dt}_fk"
+	 pk-col-pattern="id"
+	 custom-color="#aa00ff"
+	 src-table="public.ticket"
+	 dst-table="public.product"
+	 src-required="false" dst-required="false"
+	 table-name="muchos_ticket_tiene_muchos_product">
+	<label ref-type="src-label">
+		<position x="-24.15" y="-53.3297"/>
+	</label>
+	<label ref-type="dst-label">
+		<position x="9.29722" y="-0.608087"/>
+	</label>
+	<label ref-type="name-label">
+		<position x="-33.2848" y="-52.9357"/>
+	</label>
+	<column name="amount" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Quantity of the product in the ticket]]></comment>
+	</column>
+</relationship>
+
+<relationship name="cashier_herencia_worker" type="relgen"
+	 pk-pattern="{dt}_pk"
+	 custom-color="#00aaff"
+	 src-table="public.cashier"
+	 dst-table="public.worker"/>
+
+<relationship name="repletener_herencia_worker" type="relgen"
+	 pk-pattern="{dt}_pk"
+	 custom-color="#00aaff"
+	 src-table="public.repletener"
+	 dst-table="public.worker"/>
+
+<relationship name="returned" type="relnn"
+	 src-col-pattern="{sc}_{st}" dst-col-pattern="{sc}_{dt}"
+	 pk-pattern="{gt}_pk" uq-pattern="{gt}_uq"
+	 src-fk-pattern="{st}_fk" dst-fk-pattern="{dt}_fk"
+	 pk-col-pattern="id"
+	 custom-color="#aa00ff"
+	 src-table="public.product"
+	 dst-table="public.ticket"
+	 src-required="false" dst-required="false"
+	 table-name="returned">
+	<line>
+		<position x="880" y="840"/>
+	</line>
+	<label ref-type="src-label">
+		<position x="29.2972" y="-6.68775"/>
+	</label>
+	<label ref-type="dst-label">
+		<position x="-44.8399" y="0.75"/>
+	</label>
+	<label ref-type="name-label">
+		<position x="39.6408" y="2.37684"/>
+	</label>
+	<column name="amount" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Amount of the product returned]]></comment>
+	</column>
+</relationship>
+
+<relationship name="affects to" type="relnn"
+	 src-col-pattern="{sc}_{st}" dst-col-pattern="{sc}_{dt}"
+	 pk-pattern="{gt}_pk" uq-pattern="{gt}_uq"
+	 src-fk-pattern="{st}_fk" dst-fk-pattern="{dt}_fk"
+	 pk-col-pattern="id"
+	 custom-color="#aa00ff"
+	 src-table="public.coupon"
+	 dst-table="public.product"
+	 src-required="false" dst-required="false"
+	 table-name="muchos_coupon_tiene_muchos_product">
+	<label ref-type="src-label">
+		<position x="65.5626" y="-60.25"/>
+	</label>
+	<label ref-type="dst-label">
+		<position x="-4.15" y="77.2477"/>
+	</label>
+	<label ref-type="name-label">
+		<position x="0" y="0"/>
+	</label>
+</relationship>
+
+<relationship name="evaluates" type="relnn"
+	 src-col-pattern="{sc}_{st}" dst-col-pattern="{sc}_{dt}"
+	 pk-pattern="{gt}_pk" uq-pattern="{gt}_uq"
+	 src-fk-pattern="{st}_fk" dst-fk-pattern="{dt}_fk"
+	 pk-col-pattern="id"
+	 custom-color="#aa00ff"
+	 src-table="public.worker"
+	 dst-table="public.worker"
+	 src-required="false" dst-required="false"
+	 table-name="muchos_worker_tiene_muchos_worker">
+	<line>
+		<position x="956.604" y="138.133"/>
+	<position x="956.604" y="89"/>
+	<position x="877.069" y="89"/>
+	</line>
+	<column name="grade" not-null="true">
+		<type name="float" length="0"/>
+		<comment><![CDATA[Each worker is assigned an average grade as a result of an evaluation carried out on him by the rest of his colleagues.]]></comment>
+	</column>
+</relationship>
+
+</dbmodel>
